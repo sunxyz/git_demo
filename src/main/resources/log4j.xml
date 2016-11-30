@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">  
+  
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">  
+  
+  <appender name="default" class="org.apache.log4j.ConsoleAppender">  
+    <param name="target" value="System.out"/>  
+    <layout class="org.apache.log4j.PatternLayout">  
+      <param name="ConversionPattern" value="[%d{yy-MM-dd HH:mm:ss,SSS}] %-5p %c(%F:%L) ===>> %m%n"/>  
+    </layout>  
+  </appender>  
+    
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">  
+    <param name="target" value="System.out"/>  
+    <!-- 设置日志文件输出样式 -->  
+    <layout class="org.apache.log4j.PatternLayout">  
+    <!-- 设置日志的输出格式 -->  
+      <param name="ConversionPattern" value="[%d{yy-MM-dd HH:mm:ss,SSS}] %-5p %c(%F:%L) ===>> %m%n"/>  
+    </layout>  
+  </appender>  
+       
+    <!-- 输出到文件(每天产生一个文件)  -->  
+  <appender name="sys" class="org.apache.log4j.DailyRollingFileAppender">  
+    <!-- 设置日志输出文件名 -->   
+     <param name="File" value="E:\\user-job-web_warn.log" />         
+     <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />   
+    <!-- 设置日志文件输出样式 -->  
+    <layout class="org.apache.log4j.PatternLayout">  
+    <!-- 设置日志的输出格式 -->  
+      <param name="ConversionPattern" value="[%d{yy-MM-dd HH:mm:ss,SSS}] %-5p %c(%F:%L) ===>> %m%n"/>  
+    </layout>  
+  </appender>  
+   
+  
+<!-- 设置级别和目的地 -->  
+  <root>  
+    <!-- 设置根日志级别,指定路径中的日志优先级大于根日志优先级  
+    （com.swh.crm(只会输出info级别以上的日志)>root,  
+     org.quartz(只会输出warn级别以上的日志)）  
+     没有指定日志级别的则以root指定的日志级别为准 -->  
+    <level value="info" />  
+	<!-- <appender-ref ref="sys" />   -->
+    <appender-ref ref="console" />  
+  </root>  
+    
+</log4j:configuration>  
