@@ -26,6 +26,8 @@ public class ZhihuInfo implements AfterExtractor {
 	@ExtractBy(value = "//div[@class='zm-editable-content clearfix']/text()", notNull = false)
 	private List<String> answerList;
 
+	private Integer aNum;
+
 	public String getQuestion() {
 		return question;
 	}
@@ -64,6 +66,14 @@ public class ZhihuInfo implements AfterExtractor {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getaNum() {
+		return aNum;
+	}
+
+	public void setaNum(Integer aNum) {
+		this.aNum = aNum;
 	}
 
 	public void afterProcess(Page page) {

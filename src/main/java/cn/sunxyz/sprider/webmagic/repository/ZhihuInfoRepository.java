@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Update;
 
 import cn.sunxyz.sprider.webmagic.domain.ZhihuInfo;
 
-public interface ZhihuRepository {
+public interface ZhihuInfoRepository {
 	
-	@Insert("insert into zhihu_q(id,question,description,answer_num) values (#{id},#{question},#{description},#{answerNum})")
+	@Insert("insert into zhihu_q(id,question,description,answer_num) values (#{id},#{question},#{description},#{aNum})")
 	int add(ZhihuInfo zhihu);
 	
 	@Update("update from zhihu_q set question = #{question} ,description = #{description},answer_num = #{answerNum}) where id = #{id}")
