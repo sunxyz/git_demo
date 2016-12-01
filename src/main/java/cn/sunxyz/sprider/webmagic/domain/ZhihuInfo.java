@@ -9,7 +9,7 @@ import us.codecraft.webmagic.model.annotation.HelpUrl;
 import us.codecraft.webmagic.model.annotation.TargetUrl;
 
 @TargetUrl("https://www.zhihu.com/question/\\w+")
-@HelpUrl("https://www.zhihu.com/question/\\w+")
+@HelpUrl("https://www.zhihu.com/topic/\\w+")
 public class ZhihuInfo implements AfterExtractor {
 
 	private String id;
@@ -20,13 +20,19 @@ public class ZhihuInfo implements AfterExtractor {
 	@ExtractBy(value = "//div[@id='zh-question-detail']/div[@class='zm-editable-content']/text()", notNull = false)
 	private String description;
 
-	@ExtractBy(value = "//h3[@data-num]/text()", notNull = false)
+	@ExtractBy(value = "//h3/@data-num", notNull = false)
 	private String answerNum;
 
 	@ExtractBy(value = "//div[@class='zm-editable-content clearfix']/text()", notNull = false)
 	private List<String> answerList;
 
 	private Integer aNum;
+	
+	{
+		question ="";
+		description = "";
+		answerNum = "0";
+	}
 
 	public String getQuestion() {
 		return question;

@@ -20,11 +20,7 @@ public class ZhihuInfoService {
 
 	public void save(ZhihuInfo zhihuInfo) {
 		// logger.info(JSON.toJSONString(zhihu));
-		String anum = zhihuInfo.getAnswerNum();
-		int index = anum == null ? 0 : anum.indexOf("个回答");
-		if (index > 0) {
-			zhihuInfo.setaNum(Integer.valueOf(zhihuInfo.getAnswerNum().substring(0, index).trim()));
-		}
+		zhihuInfo.setaNum(Integer.valueOf(zhihuInfo.getAnswerNum()));
 		int row = repository.add(zhihuInfo);
 		if (row < 1) {// 删除已经存在的答案并更新新的数据
 			repository.update(zhihuInfo);
