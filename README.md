@@ -1,2 +1,4 @@
 # git_demo
-This is my first github project
+1 url 管理
+2 调度
+2 多线程
