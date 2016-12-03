@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 
 import cn.sunxyz.sprider.Request;
 
-public class PageLinkProcessor implements Process {
+public class PageLinkProcessor implements Processor {
 	
 /*	private static final String HREF_MATCH = "//a/@href";*/
 	

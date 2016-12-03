@@ -7,6 +7,6 @@ package cn.sunxyz.sprider;
 public class App{
 	
     public static void main( String[] args ){
-    	Sprider.create("https://www.zhihu.com/explore").go();
+    	Sprider.create("https://www.zhihu.com/explore");
     }
 }

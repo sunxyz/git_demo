@@ -30,7 +30,7 @@ public class Test {
 	public void test(){
 		DownLoader downLoader = new JsoupDownloader();
 		Page page = downLoader.dowloader("https://www.zhihu.com/explore");
-		cn.sunxyz.sprider.processor.Process process = new PageLinkProcessor();
+		cn.sunxyz.sprider.processor.Processor process = new PageLinkProcessor();
 		process.process(page);
 		List<Request> requests = page.getRequests();
 		System.out.println(JSON.toJSON(requests));
@@ -52,7 +52,7 @@ public class Test {
 	public void dowload(Request request){
 		DownLoader downLoader = new JsoupDownloader();
 		Page page = downLoader.dowloader(request.getUrl());
-		cn.sunxyz.sprider.processor.Process process = new PageLinkProcessor();
+		cn.sunxyz.sprider.processor.Processor process = new PageLinkProcessor();
 		process.process(page);
 		//添加进以访问队列
 		visitedQueue.push(request);

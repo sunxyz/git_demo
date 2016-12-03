@@ -1,6 +1,6 @@
 package cn.sunxyz.sprider.processor;
 
-public interface Process {
+public interface Processor {
 
 	Page process(Page page);
 }
