@@ -26,8 +26,10 @@ public class JavaBeanManager {
 	private Setter setter;
 
 	private Class<?> clazz;
-
-	private JavaBean bean;
+	
+	private Annotation[] classAnnotation;
+	
+	private JavaBeanField[] beanFields;
 
 	public static JavaBeanManager create() {
 		return new JavaBeanManager();
@@ -51,24 +53,30 @@ public class JavaBeanManager {
 	private void initClassInfo() {
 		List<Field> fields = JavaBeanUtil.getAllField(clazz);
 		int size = fields.size();
-		JavaBeanField[] beanFields = new JavaBeanField[size];
+		beanFields = new JavaBeanField[size];
 		for (int i = 0; i < size; i++) {
 			Field field = fields.get(i);
 			Annotation[] annotations = field.getAnnotations();
 			beanFields[i] = new JavaBeanField(field, annotations);
 		}
 		logger.debug(JSON.toJSONString(beanFields));
-		Object owner = JavaBeanUtil.newInstance(clazz);
-		Annotation[] classAnnotation = clazz.getAnnotations();
-		bean = new JavaBean(owner, beanFields, classAnnotation);
+		classAnnotation = clazz.getAnnotations();
+		
 	}
 
-	public void setter(Object... args) {
+	public Object setter(Object... args) {
+		JavaBean bean = crateBean();
 		setter.setter(bean, args);
+		return bean.getOwner();
 	}
 
-	public JavaBean getBean() {
-		return bean;
+	private JavaBean crateBean() {
+		Object owner = JavaBeanUtil.newInstance(clazz);
+		return new JavaBean(owner, beanFields, classAnnotation);
+	}
+	
+	public JavaBean getJavaBean(){
+		return crateBean();
 	}
 
 }

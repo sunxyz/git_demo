@@ -50,6 +50,10 @@ public final class JavaBeanUtil {
 		invokeMethod(owner, methodName, arg);
 	}
 
+	public static void setMethod(Object owner, Field field, Object arg) {
+		beanSetMethod(owner, field, arg);
+	}
+
 	/**
 	 * 方法作用域需要共有
 	 * 
@@ -112,15 +116,45 @@ public final class JavaBeanUtil {
 		return null;
 	}
 
-	private static void getSupperClassList(List<Class<?>> clazzs, Class<?> clazz) {
-		clazzs.add(clazz);
-		if (clazz.getSuperclass() != Object.class) {
-			Class<?> clazzParent = clazz.getSuperclass();
-			getSupperClassList(clazzs, clazzParent);
+	private static Object beanSetMethod(Object owner, Field field, Object arg) {
+		String methodName = Config.SETTER + UpCase(field.getName());
+		Class<?> ownerClass = owner.getClass();
+		Class<?> argClass = field.getType();
+		try {
+			Method method = ownerClass.getMethod(methodName, argClass);
+			return method.invoke(owner, arg);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return null;
+	}
+
+	private static void getSupperClassList(List<Class<?>> clazzs, Class<?> clazz) {
+		if (clazz != null) {
+			clazzs.add(clazz);
+			if (clazz.getSuperclass() != Object.class) {
+				Class<?> clazzParent = clazz.getSuperclass();
+				getSupperClassList(clazzs, clazzParent);
+			}
+		}
+
 	}
 
 	private static String UpCase(String fieldName) {
 		return fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 	}
+	
 }
