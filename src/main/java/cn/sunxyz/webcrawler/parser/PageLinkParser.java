@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.jsoup.nodes.Document;
 
-import cn.sunxyz.webcrawler.download.Page;
+import cn.sunxyz.webcrawler.Page;
 
 public class PageLinkParser implements LinkParser {
 	

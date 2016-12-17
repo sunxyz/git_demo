@@ -1,6 +1,6 @@
 package cn.sunxyz.webcrawler.queue;
 
-public interface Crawl<R>{
+public interface Queue<R>{
 
 	void push(R request);
 

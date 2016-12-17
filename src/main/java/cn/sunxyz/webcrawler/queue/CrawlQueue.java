@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class QueueCrawl<R extends Serializable> implements Crawl<R> {
+public class CrawlQueue<R extends Serializable> implements Queue<R> {
 
 	private BlockingQueue<R> queue = new LinkedBlockingQueue<R>();
 

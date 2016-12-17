@@ -1,8 +1,6 @@
-package cn.sunxyz.webcrawler.download;
+package cn.sunxyz.webcrawler;
 
 import org.jsoup.nodes.Document;
-
-import cn.sunxyz.webcrawler.Request;
 
 
 public class Page {

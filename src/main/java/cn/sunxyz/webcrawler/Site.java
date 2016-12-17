@@ -2,8 +2,6 @@ package cn.sunxyz.webcrawler;
 
 import java.util.Set;
 
-import cn.sunxyz.webcrawler.download.Page;
-
 public class Site {
 
 	private Page page;
@@ -12,6 +10,11 @@ public class Site {
 
 	public Site() {
 		super();
+	}
+
+	public Site(Page page) {
+		super();
+		this.page = page;
 	}
 
 	public Site(Page page, Set<Request> requests) {

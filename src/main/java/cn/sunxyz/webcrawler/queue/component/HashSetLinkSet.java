@@ -4,7 +4,7 @@ import java.util.Set;
 import cn.sunxyz.webcrawler.Request;
 import cn.sunxyz.webcrawler.utils.ConcurrentHashSet;
 
-public class HashSetVisitedSet<R> implements VisitedSet<R> {
+public class HashSetLinkSet<R> implements LinkSet<R> {
 
 	private Set<String> urls = new ConcurrentHashSet<>();
 

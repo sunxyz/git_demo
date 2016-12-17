@@ -1,6 +1,6 @@
 package cn.sunxyz.webcrawler.queue.component;
 
-public interface VisitedSet<R>{
+public interface LinkSet<R>{
 
 	void push(R request);
 

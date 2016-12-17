@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import cn.sunxyz.webcrawler.Page;
 import cn.sunxyz.webcrawler.Request;
 
 
