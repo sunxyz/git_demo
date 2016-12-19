@@ -3,8 +3,9 @@ package cn.sunxyz.webcrawler;
 import java.util.Set;
 
 import cn.sunxyz.webcrawler.Request.RequestLinkType;
-import cn.sunxyz.webcrawler.builder.BuilderAdapter;
-import cn.sunxyz.webcrawler.builder.OwnerBuilder;
+import cn.sunxyz.webcrawler.builder.Builder;
+import cn.sunxyz.webcrawler.builder.OwnerBuilderAdapter;
+import cn.sunxyz.webcrawler.builder.OwnerTreeBuilder;
 import cn.sunxyz.webcrawler.download.DownLoader;
 import cn.sunxyz.webcrawler.download.JsoupDownloader;
 import cn.sunxyz.webcrawler.parser.link.LinksFilter;
@@ -22,7 +23,9 @@ public class Sprider {
 
 	private Scheduler scheduler;// 队列管理
 
-	private BuilderAdapter builderAdapter; // 对象构建
+	private OwnerBuilderAdapter builderAdapter; // 对象构建
+
+	private Builder builder;
 
 	private Pipeline<Object> pipeline;// 对象信息 管道
 
@@ -32,6 +35,7 @@ public class Sprider {
 		downLoader = new JsoupDownloader();
 		pipeline = new DeafultPipeLine<>();
 		scheduler = new QueueScheduler();
+		builder = new OwnerTreeBuilder();
 		configer = new Configer();
 	}
 
@@ -40,7 +44,7 @@ public class Sprider {
 	}
 
 	public Sprider init(Class<?> clazz, Pipeline<Object> pipeline, String... urls) {
-		builderAdapter = new BuilderAdapter(clazz, new OwnerBuilder());
+		builderAdapter = new OwnerBuilderAdapter(clazz, builder);
 		linksFilter = new LinksFilter(builderAdapter);
 		this.pipeline = pipeline;
 		scheduler.push(urls);
@@ -52,11 +56,14 @@ public class Sprider {
 	}
 
 	public void run() {
+		if (builderAdapter == null) {
+			throw new NullPointerException();
+		}
 		this.download();
 	}
 
 	public void run(FetchType fetchType) {
-		if (fetchType == null) {
+		if (builderAdapter == null || fetchType == null) {
 			throw new NullPointerException();
 		}
 		this.download(fetchType);
@@ -97,10 +104,7 @@ public class Sprider {
 
 		private Sprider that = Sprider.this;
 
-		public Configer setCache(Cache cache) {
-			that.scheduler.setCache(cache);
-			return this;
-		}
+		private Cache cache;
 
 		public Configer setDownLoader(DownLoader downLoader) {
 			that.downLoader = downLoader;
@@ -109,11 +113,24 @@ public class Sprider {
 
 		public Configer setScheduler(Scheduler scheduler) {
 			that.scheduler = scheduler;
+			that.scheduler.setCache(cache);
 			return this;
 		}
 
-		public Configer setPipeline(Pipeline<Object> pipeline) {
-			that.pipeline = pipeline;
+		public Configer setCache(Cache cache) {
+			this.cache = cache;
+			that.scheduler.setCache(cache);
+			return this;
+		}
+
+		public Configer setBuilder(Builder builder) {
+			that.builderAdapter.setBuilder(builder);
+			return this;
+		}
+
+		@SuppressWarnings("unchecked")
+		public Configer setPipeline(Pipeline<? extends Object> pipeline) {
+			that.pipeline = (Pipeline<Object>) pipeline;
 			return this;
 		}
 

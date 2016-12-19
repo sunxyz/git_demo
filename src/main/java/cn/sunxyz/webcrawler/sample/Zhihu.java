@@ -1,21 +1,23 @@
 package cn.sunxyz.webcrawler.sample;
 
-import java.util.List;
-
 import cn.sunxyz.webcrawler.builder.annotation.ExtractBy;
+import cn.sunxyz.webcrawler.builder.annotation.ExtractElement;
 import cn.sunxyz.webcrawler.builder.annotation.HelpLink;
 import cn.sunxyz.webcrawler.builder.annotation.TargetLink;
 
-@TargetLink(value = "(https://www.zhihu.com/question/\\d*)",group = 1)
+@TargetLink(value = "(https://www.zhihu.com/question/\\d*)", group = 1)
 @HelpLink("https://www.zhihu.com/topic/\\w+")
 public class Zhihu {
 
 	@ExtractBy("//title/text()")
 	private String title;
-	
-	@ExtractBy(value = "//div[@class='zm-editable-content clearfix']/text()")
-	private List<String> answerList;
 
+	@ExtractBy("//[@id='zh-question-detail']/[@class='zm-editable-content']/text()")
+	private String question;
+
+	@ExtractElement
+	private ZhihuAnswers answers;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -24,14 +26,22 @@ public class Zhihu {
 		this.title = title;
 	}
 
-	public List<String> getAnswerList() {
-		return answerList;
+	public String getQuestion() {
+		return question;
 	}
 
-	public void setAnswerList(List<String> answerList) {
-		this.answerList = answerList;
+	public void setQuestion(String question) {
+		this.question = question;
 	}
-	
-	
 
+	public ZhihuAnswers getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(ZhihuAnswers answers) {
+		this.answers = answers;
+	}
+
+	
+	
 }

@@ -4,23 +4,23 @@ import cn.sunxyz.bean.JavaBeanManager;
 import cn.sunxyz.bean.bean.JavaBean;
 import cn.sunxyz.webcrawler.Page;
 
-public class BuilderAdapter {
+public class OwnerBuilderAdapter {
 	
 	private JavaBeanManager beanManager;
 	
 	private Builder builder;
 	
-	private BuilderAdapter(){
+	private OwnerBuilderAdapter(){
 		beanManager = JavaBeanManager.create();
 	}
 	
-	public BuilderAdapter(Class<?> clazz, Builder builder){
+	public OwnerBuilderAdapter(Class<?> clazz, Builder builder){
 		this();
 		this.init(clazz, builder);
 	}
 	
-	public static BuilderAdapter create() {
-		return new BuilderAdapter();
+	public static OwnerBuilderAdapter create() {
+		return new OwnerBuilderAdapter();
 	}
 	
 	public void init(Class<?> clazz, Builder builder){
@@ -37,5 +37,11 @@ public class BuilderAdapter {
 	public JavaBean getNewBean(){
 		return beanManager.getJavaBean();
 	}
+
+	public void setBuilder(Builder builder) {
+		this.builder = builder;
+	}
+	
+	
 
 }

@@ -10,19 +10,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * javaBean 工具 设值方法工具
-* @author 杨瑞东
-* @date 2016年12月17日 下午2:33:42
-* @see JavaBeanUtil
-*
+ * 
+ * @author 杨瑞东
+ * @date 2016年12月17日 下午2:33:42
+ * @see JavaBeanUtil
+ *
  */
 public final class JavaBeanSetter {
+
+	private static Logger logger = LoggerFactory.getLogger(JavaBeanSetter.class);
 	
-	private JavaBeanSetter(){
-		
+	private JavaBeanSetter() {
+
 	}
-	
+
 	public static void setMethod(Object owner, Field field, List<?> values) {
 		if (!values.isEmpty()) {
 			Class<?> fClazz = field.getType();
@@ -52,27 +59,40 @@ public final class JavaBeanSetter {
 	}
 
 	private static Object getValue(Class<?> fieldClazz, Object obj) {
-		String item = obj.toString();
-		if (fieldClazz == FieldType.BYTE.getBaseClazz() || fieldClazz == FieldType.BYTE.getPackClazz()) {
-			return Byte.valueOf(item);
-		} else if (fieldClazz == FieldType.INTEGER.getBaseClazz() || fieldClazz == FieldType.INTEGER.getPackClazz()) {
-			return Integer.valueOf(item);
-		} else if (fieldClazz == FieldType.SHORT.getBaseClazz() || fieldClazz == FieldType.SHORT.getPackClazz()) {
-			return Short.valueOf(item);
-		} else if (fieldClazz == FieldType.LONG.getBaseClazz() || fieldClazz == FieldType.LONG.getPackClazz()) {
-			return Long.valueOf(item);
-		} else if (fieldClazz == FieldType.BOOLEAN.getBaseClazz() || fieldClazz == FieldType.BOOLEAN.getPackClazz()) {
-			return Boolean.valueOf(item);
-		} else if (fieldClazz == FieldType.CHAR.getBaseClazz() || fieldClazz == FieldType.CHAR.getPackClazz()) {
-			return Character.toChars(0);
-		} else if (fieldClazz == FieldType.FLOAT.getBaseClazz() || fieldClazz == FieldType.FLOAT.getPackClazz()) {
-			return Float.valueOf(item);
-		} else if (fieldClazz == FieldType.DOUBLE.getBaseClazz() || fieldClazz == FieldType.DOUBLE.getPackClazz()) {
-			return Double.valueOf(item);
-		} else if (fieldClazz == FieldType.STRING.getBaseClazz() || fieldClazz == FieldType.STRING.getPackClazz()) {
-			return item;
-		} else {
+		FieldType fieldType1 = FieldType.getType(fieldClazz);
+		if (fieldType1 == null) {
 			return obj;
+		} else {
+			try {
+				String item = obj.toString().trim();
+				switch (fieldType1) {
+				case BYTE:
+					return Byte.valueOf(item);
+				case INTEGER:
+					return Integer.valueOf(item);
+				case SHORT:
+					return Short.valueOf(item);
+				case LONG:
+					return Long.valueOf(item);
+				case BOOLEAN:
+					return Boolean.valueOf(item);
+				case CHAR:
+					return item.charAt(0);
+				case FLOAT:
+					return Float.valueOf(item);
+				case DOUBLE:
+					return Double.valueOf(item);
+				case STRING:
+					return item;
+				default:
+					return obj;
+				}
+			} catch (RuntimeException e) {
+				//此处不需要做处理
+				logger.error(e.getLocalizedMessage());
+				return null;
+			}
+			
 		}
 
 	}
@@ -131,7 +151,16 @@ public final class JavaBeanSetter {
 		public Class<?> getPackClazz() {
 			return packClazz;
 		}
+
+		public static FieldType getType(Class<?> clazz) {
+			FieldType fieldTypes[] = FieldType.values();
+			for (FieldType fieldType : fieldTypes) {
+				if (fieldType.getBaseClazz() == clazz || fieldType.getPackClazz() == clazz) {
+					return fieldType;
+				}
+			}
+			return null;
+		}
 	}
 
-	
 }

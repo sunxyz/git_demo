@@ -45,6 +45,7 @@ public final class JavaBeanUtil {
 	 * 
 	 * @author: 杨瑞东
 	 */
+	@Deprecated
 	public static void setMethod(Object owner, String fieldName, Object arg) {
 		String methodName = Config.SETTER + UpCase(fieldName);
 		invokeMethod(owner, methodName, arg);
@@ -80,6 +81,7 @@ public final class JavaBeanUtil {
 		return null;
 	}
 
+	@Deprecated
 	private static Object invokeMethod(Object owner, String methodName, Object... args) {
 		Class<?> ownerClass = owner.getClass();
 		Class<?>[] argsClass = new Class[args.length];

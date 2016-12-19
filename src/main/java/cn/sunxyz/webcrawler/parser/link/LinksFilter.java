@@ -10,7 +10,7 @@ import cn.sunxyz.bean.bean.JavaBean;
 import cn.sunxyz.webcrawler.Page;
 import cn.sunxyz.webcrawler.Request;
 import cn.sunxyz.webcrawler.Request.RequestLinkType;
-import cn.sunxyz.webcrawler.builder.BuilderAdapter;
+import cn.sunxyz.webcrawler.builder.OwnerBuilderAdapter;
 import cn.sunxyz.webcrawler.builder.annotation.HelpLink;
 import cn.sunxyz.webcrawler.builder.annotation.TargetLink;
 import cn.sunxyz.webcrawler.parser.LinkParser;
@@ -32,11 +32,11 @@ public class LinksFilter {
 		linkParser = new PageLinkParser();
 	}
 
-	public LinksFilter(BuilderAdapter builderAdapter) {
+	public LinksFilter(OwnerBuilderAdapter builderAdapter) {
 		this.initRegex(builderAdapter);
 	}
 
-	private void initRegex(BuilderAdapter builderAdapter) {
+	private void initRegex(OwnerBuilderAdapter builderAdapter) {
 		JavaBean bean = builderAdapter.getNewBean();
 		Annotation[] annotations = bean.getClassAnnotations();
 		for (Annotation annotation : annotations) {
