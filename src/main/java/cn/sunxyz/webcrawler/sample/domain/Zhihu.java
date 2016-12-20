@@ -1,4 +1,4 @@
-package cn.sunxyz.webcrawler.sample;
+package cn.sunxyz.webcrawler.sample.domain;
 
 import cn.sunxyz.webcrawler.builder.annotation.ExtractBy;
 import cn.sunxyz.webcrawler.builder.annotation.ExtractElement;

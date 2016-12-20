@@ -35,14 +35,11 @@ public final class JavaBeanSetter {
 			Class<?> fClazz = field.getType();
 			// TODO 只实现了基本的容器
 			Class<?> gtClazz = getClass(field.getGenericType(), 0);
-			if (fClazz == Set.class) {
+			if (fClazz == Set.class || fClazz == Collection.class) {
 				Set<?> set = values.stream().map(item -> getValue(gtClazz, item)).collect(Collectors.toSet());
 				JavaBeanUtil.setMethod(owner, field, set);
-			} else if (fClazz == List.class) {
+			} else if (fClazz == List.class ) {
 				List<?> list = values.stream().map(item -> getValue(gtClazz, item)).collect(Collectors.toList());
-				JavaBeanUtil.setMethod(owner, field, list);
-			} else if (fClazz == Collection.class) {
-				Collection<?> list = values.stream().map(item -> getValue(gtClazz, item)).collect(Collectors.toList());
 				JavaBeanUtil.setMethod(owner, field, list);
 			} else if (fClazz == Map.class) {
 				// TODO 暂时不考虑实现

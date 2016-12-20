@@ -4,11 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.alibaba.fastjson.JSON;
-
 import cn.sunxyz.bean.bean.JavaBean;
 import cn.sunxyz.bean.bean.JavaBeanField;
 import cn.sunxyz.bean.setter.MapSetter;
@@ -21,14 +16,12 @@ public class JavaBeanManager {
 
 	}
 
-	private static Logger logger = LoggerFactory.getLogger(JavaBeanManager.class);
-
 	private Setter setter;
 
 	private Class<?> clazz;
-	
+
 	private Annotation[] classAnnotation;
-	
+
 	private JavaBeanField[] beanFields;
 
 	public static JavaBeanManager create() {
@@ -44,7 +37,7 @@ public class JavaBeanManager {
 		this.clazz = clazz;
 		this.setter = setter;
 		this.initClassInfo();
-		if (args != null) {
+		if (args.length > 0) {
 			this.setter(args);
 		}
 		return this;
@@ -59,9 +52,8 @@ public class JavaBeanManager {
 			Annotation[] annotations = field.getAnnotations();
 			beanFields[i] = new JavaBeanField(field, annotations);
 		}
-		logger.debug(JSON.toJSONString(beanFields));
 		classAnnotation = clazz.getAnnotations();
-		
+
 	}
 
 	public Object setter(Object... args) {
@@ -74,8 +66,8 @@ public class JavaBeanManager {
 		Object owner = JavaBeanUtil.newInstance(clazz);
 		return new JavaBean(owner, beanFields, classAnnotation);
 	}
-	
-	public JavaBean getJavaBean(){
+
+	public JavaBean getJavaBean() {
 		return crateBean();
 	}
 

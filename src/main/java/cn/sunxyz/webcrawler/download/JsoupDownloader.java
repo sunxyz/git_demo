@@ -13,21 +13,20 @@ public class JsoupDownloader implements DownLoader {
 
 	private static Integer timeout = 5000;
 
-	public Document downloadDocument(String url) {
-		Document document = null;
-		try {
-			document = Jsoup.connect(url).timeout(timeout).get();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return document;
+	public Document downloadDocument(String url) throws IOException  {
+		return Jsoup.connect(url).timeout(timeout).get();
 	}
 
 	@Override
 	public Page dowloader(Request request) {
-		Document document = this.downloadDocument(request.getUrl());
-		return new Page().setRequest(request).setDocument(document);
+		Page page = new Page().setRequest(request);
+		try {
+			Document document = this.downloadDocument(request.getUrl());
+			page.setDocument(document);
+		} catch (IOException e) {
+			page.setStatus(false);
+		}
+		return page;
 	}
 
 	@Override

@@ -9,6 +9,10 @@ public class Request implements Serializable {
 	private String url;
 	
 	private RequestLinkType method;
+	
+	{
+		method = RequestLinkType.OTHER;
+	}
 
 	public Request() {
 		super();

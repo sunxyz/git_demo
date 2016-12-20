@@ -31,7 +31,7 @@ public class MapSetter implements Setter {
 				for(String key: map.keySet()){
 					Object val = map.get(key);
 					if(key.equals(beanMap.getField(key).getField().getName())) {
-						JavaBeanUtil.setMethod(owner, key, val);
+						JavaBeanUtil.setMethod(owner, beanMap.getField(key).getField(), val);
 					}
 				}
 			}

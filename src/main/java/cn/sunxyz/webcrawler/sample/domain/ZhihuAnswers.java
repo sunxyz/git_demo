@@ -1,4 +1,4 @@
-package cn.sunxyz.webcrawler.sample;
+package cn.sunxyz.webcrawler.sample.domain;
 
 import java.util.List;
 

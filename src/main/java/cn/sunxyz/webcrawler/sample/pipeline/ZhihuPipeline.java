@@ -1,12 +1,11 @@
-package cn.sunxyz.webcrawler.sample;
+package cn.sunxyz.webcrawler.sample.pipeline;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
-
 import cn.sunxyz.webcrawler.Site;
 import cn.sunxyz.webcrawler.pipeline.DeafultPipeLine;
+import cn.sunxyz.webcrawler.sample.domain.Zhihu;
 
 public class ZhihuPipeline extends DeafultPipeLine<Zhihu>{
 
@@ -14,7 +13,7 @@ public class ZhihuPipeline extends DeafultPipeLine<Zhihu>{
 	
 	@Override
 	public void process(Zhihu t, Site site) {
-		logger.debug(JSON.toJSONString(t));
+//		logger.debug(JSON.toJSONString(t));
 		logger.debug("dowload {}", site.getPage().getRequest().getUrl());
 	}
 

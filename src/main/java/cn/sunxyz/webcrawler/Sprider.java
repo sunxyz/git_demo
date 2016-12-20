@@ -25,8 +25,6 @@ public class Sprider {
 
 	private OwnerBuilderAdapter builderAdapter; // 对象构建
 
-	private Builder builder;
-
 	private Pipeline<Object> pipeline;// 对象信息 管道
 
 	private Configer configer;
@@ -35,7 +33,6 @@ public class Sprider {
 		downLoader = new JsoupDownloader();
 		pipeline = new DeafultPipeLine<>();
 		scheduler = new QueueScheduler();
-		builder = new OwnerTreeBuilder();
 		configer = new Configer();
 	}
 
@@ -44,6 +41,7 @@ public class Sprider {
 	}
 
 	public Sprider init(Class<?> clazz, Pipeline<Object> pipeline, String... urls) {
+		Builder builder = new OwnerTreeBuilder();
 		builderAdapter = new OwnerBuilderAdapter(clazz, builder);
 		linksFilter = new LinksFilter(builderAdapter);
 		this.pipeline = pipeline;
@@ -73,12 +71,14 @@ public class Sprider {
 		while (scheduler.size() > 0) {
 			Request request = scheduler.pop();
 			Page page = downLoader.dowloader(request);
-			Set<Request> requests = linksFilter.getRequests(page);
-			if (!RequestLinkType.HELP.equals(request.getMethod())) {
-				Object owner = builderAdapter.buildOwner(page);// 注值
-				pipeline.process(owner, new Site(page, requests));// 流处理
+			if (page.getStatus()) {
+				Set<Request> requests = linksFilter.getRequests(page);
+				if (!RequestLinkType.HELP.equals(request.getMethod())) {
+					Object owner = builderAdapter.buildOwner(page);// 注值
+					pipeline.process(owner, new Site(page, requests));// 流处理
+				}
+				scheduler.push(requests);
 			}
-			scheduler.push(requests);
 		}
 	}
 
@@ -91,9 +91,11 @@ public class Sprider {
 			while (scheduler.size() > 0) {
 				Request request = scheduler.pop();
 				Page page = downLoader.dowloader(request);
-				if (!RequestLinkType.HELP.equals(request.getMethod())) {
-					Object owner = builderAdapter.buildOwner(page);// 注值
-					pipeline.process(owner, new Site(page));// 流处理
+				if (page.getStatus()) {
+					if (!RequestLinkType.HELP.equals(request.getMethod())) {
+						Object owner = builderAdapter.buildOwner(page);// 注值
+						pipeline.process(owner, new Site(page));// 流处理
+					}
 				}
 			}
 			break;

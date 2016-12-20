@@ -9,21 +9,13 @@ public class OwnerBuilderAdapter {
 	private JavaBeanManager beanManager;
 	
 	private Builder builder;
-	
-	private OwnerBuilderAdapter(){
-		beanManager = JavaBeanManager.create();
-	}
-	
+
 	public OwnerBuilderAdapter(Class<?> clazz, Builder builder){
-		this();
+		beanManager = JavaBeanManager.create();
 		this.init(clazz, builder);
 	}
 	
-	public static OwnerBuilderAdapter create() {
-		return new OwnerBuilderAdapter();
-	}
-	
-	public void init(Class<?> clazz, Builder builder){
+	private void init(Class<?> clazz, Builder builder){
 		this.builder = builder;
 		beanManager.init(clazz);
 	}
