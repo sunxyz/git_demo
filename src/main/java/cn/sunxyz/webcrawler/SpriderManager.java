@@ -3,6 +3,7 @@ package cn.sunxyz.webcrawler;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cn.sunxyz.webcrawler.AbstratSprider.FetchType;
 import cn.sunxyz.webcrawler.builder.Builder;
 import cn.sunxyz.webcrawler.download.DownLoader;
 import cn.sunxyz.webcrawler.pipeline.Pipeline;
@@ -39,7 +40,7 @@ public final class SpriderManager {
 		// 创建任务
 		WSprider.scheduler.push(urls);
 		wSpriders = new WSprider[task];
-		for (int i = 0; i < nThreads; i++) {
+		for (int i = 0; i < task; i++) {
 			wSpriders[i] = new WSprider(clazz);
 		}
 		return manager;
@@ -53,7 +54,7 @@ public final class SpriderManager {
 	public void run() {
 		// 执行任务
 		executor = Executors.newFixedThreadPool(nThreads);
-		for (int i = 0; i < nThreads; i++) {
+		for (int i = 0; i < task; i++) {
 			WSprider wSprider = wSpriders[i];
 			try {
 				Thread.currentThread().sleep(WSprider.sleep);
@@ -64,6 +65,11 @@ public final class SpriderManager {
 			executor.execute(wSprider);
 		}
 		executor.shutdown();
+	}
+
+	public void run(FetchType fetchType) {
+		configer().setFetchType(fetchType);
+		run();
 	}
 
 	public static class Configer {
@@ -87,6 +93,9 @@ public final class SpriderManager {
 			manager.run();
 		}
 
+		public void run(FetchType fetchType) {
+			manager.run(fetchType);
+		}
 
 		// TODO 此处是否让任务持有相同对象的引用
 		private Cache cache;
@@ -119,9 +128,15 @@ public final class SpriderManager {
 			return this;
 		}
 
+		public Configer setFetchType(FetchType fetchType) {
+			WSprider.fetchType = fetchType;
+			return this;
+		}
+
 		public Configer addRequest(String... requests) {
 			WSprider.scheduler.push(requests);
 			return this;
 		}
+
 	}
 }

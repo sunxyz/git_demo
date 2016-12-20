@@ -8,7 +8,7 @@ public class WSprider extends AbstratSprider implements Runnable {
 
 	@Override
 	public void run() {
-		start(FetchType.Eager);
+		start(fetchType);
 	}
 
 	public WSprider(Class<?> clazz, String... urls) {

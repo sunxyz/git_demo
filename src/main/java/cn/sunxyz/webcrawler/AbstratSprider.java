@@ -13,11 +13,13 @@ import cn.sunxyz.webcrawler.scheduler.Scheduler;
 import cn.sunxyz.webcrawler.scheduler.cache.Cache;
 
 public abstract class AbstratSprider {
-	
+
 	protected static int sleep = 1000;
-	
+
+	protected static FetchType fetchType;
+
 	protected static Scheduler scheduler;// 队列管理
-	
+
 	protected static DownLoader downLoader;// 下载器
 
 	protected static LinksFilter linksFilter;// 链接筛选匹配
@@ -28,15 +30,16 @@ public abstract class AbstratSprider {
 
 	protected static Configer configer;
 
-	static{
+	static {
 		scheduler = new QueueScheduler();
 		downLoader = new JsoupDownloader();
 		pipeline = new DeafultPipeLine<>();
 		configer = new Configer();
+		fetchType = FetchType.Eager;
 	}
-	
+
 	abstract void download(FetchType fetchType);
-	
+
 	public void start(FetchType fetchType) {
 		if (builderAdapter == null || fetchType == null) {
 			throw new NullPointerException();
@@ -47,7 +50,7 @@ public abstract class AbstratSprider {
 	public Configer configer() {
 		return configer;
 	}
-	
+
 	protected static void init(Class<?> clazz, Pipeline<Object> pipeline, String... urls) {
 		Builder builder = new OwnerTreeBuilder();
 		builderAdapter = new OwnerBuilderAdapter(clazz, builder);
@@ -55,7 +58,7 @@ public abstract class AbstratSprider {
 		AbstratSprider.pipeline = pipeline;
 		scheduler.push(urls);
 	}
-	
+
 	public static class Configer {
 
 		private Cache cache;
@@ -88,10 +91,16 @@ public abstract class AbstratSprider {
 			return this;
 		}
 
+		public Configer setFetchType(FetchType fetchType) {
+			AbstratSprider.fetchType = fetchType;
+			return this;
+		}
+
 		public Configer addRequest(String... requests) {
 			AbstratSprider.scheduler.push(requests);
 			return this;
 		}
+
 	}
 
 	public enum FetchType {
