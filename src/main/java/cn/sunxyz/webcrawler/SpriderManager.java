@@ -22,6 +22,8 @@ public final class SpriderManager {
 	private static int nThreads = 10;
 
 	private static int task = 10;
+	
+	private static Class<?> clazz;
 
 	private static ExecutorService executor;
 
@@ -39,10 +41,7 @@ public final class SpriderManager {
 	public static SpriderManager create(Class<?> clazz, String... urls) {
 		// 创建任务
 		WSprider.scheduler.push(urls);
-		wSpriders = new WSprider[task];
-		for (int i = 0; i < task; i++) {
-			wSpriders[i] = new WSprider(clazz);
-		}
+		SpriderManager.clazz = clazz;
 		return manager;
 	}
 
@@ -52,6 +51,11 @@ public final class SpriderManager {
 
 	@SuppressWarnings("static-access")
 	public void run() {
+		// 创建任务
+		wSpriders = new WSprider[task];
+		for (int i = 0; i < task; i++) {
+			wSpriders[i] = new WSprider(clazz);
+		}
 		// 执行任务
 		executor = Executors.newFixedThreadPool(nThreads);
 		for (int i = 0; i < task; i++) {
